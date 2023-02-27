@@ -3,20 +3,25 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { PostModule } from './post/post.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { ConfigModule } from '@nestjs/config';
+import { CategoryModule } from './category/category.module';
 
 @Module({
   imports: [
+    ConfigModule.forRoot(),
     TypeOrmModule.forRoot({
       type: 'postgres',
-      host: 'localhost',
-      port: 5432,
-      username: 'postgres',
-      password: 'postgres',
-      database: 'postgres',
-      entities: ["dist/**/*.entity{.ts,.js}"],
+      host: process.env.POSTGRES_HOST,
+      port: parseInt(process.env.POSTGRES_PORT),
+      username: process.env.POSTGRES_USER,
+      password: process.env.POSTGRES_PASSWORD,
+      database: process.env.POSTGRES_DB,
+      entities: [__dirname + '/**/*.entity{.ts,.js}'],
       synchronize: true,
+      autoLoadEntities: true,
     }),
-    PostModule
+    PostModule,
+    CategoryModule
   ],
   controllers: [AppController],
   providers: [AppService],

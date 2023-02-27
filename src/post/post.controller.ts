@@ -1,4 +1,6 @@
 import { Body, Controller, Delete, Get, Param, ParseIntPipe, Post, Put } from '@nestjs/common';
+import { PostCreateDto } from './entity/post-create.dto';
+import { PostUpdateDto } from './entity/post-update.dto';
 import { PostService } from './post.service';
 
 @Controller('posts')
@@ -17,14 +19,14 @@ export class PostController {
     }
     @Post()
     createPost(
-        @Body() data: any,
+        @Body() data: PostCreateDto,
     ) {
         return this.postService.createPost(data);
     }
     @Put(':id')
     updatePost(
         @Param('id', ParseIntPipe) id: number,
-        @Body() data: any
+        @Body() data: PostUpdateDto
     ) {
         return this.postService.updatePost(id, data);
     }
