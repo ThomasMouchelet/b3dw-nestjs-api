@@ -12,11 +12,34 @@ export class PostService {
         private readonly postRepository: Repository<PostEntity>
     ) {}
 
-    async getAllPosts() {
-        return await this.postRepository.find();
+    async getAllPosts(queries) {
+        let { page, limit, search, order, published } = queries;
+
+        limit = limit ? +limit : 10;
+
+        const query = await this.postRepository
+            .createQueryBuilder('post')
+            .leftJoinAndSelect('post.categories', 'categories')
+
+        if(published !== undefined) {
+            query
+                .andWhere('post.published = :published', { published })
+        }
+
+        const postList = query
+                            .limit(limit)
+                            .getMany();
+
+        return postList;
     }
     async getOnePostById(id: number) {
-        return await this.postRepository.findOneBy({ id });
+        const post = await this.postRepository
+            .createQueryBuilder('post')
+            .leftJoinAndSelect('post.categories', 'categories')
+            .where('post.id = :id', { id })
+            .getOne();
+
+        return post;
     }
     async createPost(data: PostCreateDto) {
         try {

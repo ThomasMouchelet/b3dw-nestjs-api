@@ -23,7 +23,9 @@ export class PostEntity extends Timestamp {
     })
     published: boolean;
 
-    @ManyToMany(() => CategoryEntity, category => category.posts)
+    @ManyToMany(() => CategoryEntity, category => category.posts, {
+        cascade: ['insert'],
+    })
     @JoinTable()
     categories: CategoryEntity[];
 }

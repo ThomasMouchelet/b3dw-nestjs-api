@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, ParseIntPipe, Post, Put } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, ParseIntPipe, Post, Put, Query } from '@nestjs/common';
 import { PostCreateDto } from './entity/post-create.dto';
 import { PostUpdateDto } from './entity/post-update.dto';
 import { PostService } from './post.service';
@@ -8,8 +8,10 @@ export class PostController {
     constructor(private readonly postService: PostService) {}
 
     @Get()
-    getAllPosts() {
-        return this.postService.getAllPosts()
+    getAllPosts(
+        @Query() queries
+    ) {
+        return this.postService.getAllPosts(queries)
     }
     @Get(':id')
     getOnePostById(
