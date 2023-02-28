@@ -12,6 +12,15 @@ export class CategoryEntity extends Timestamp {
     })
     name: string;
 
+    @Column({
+        // default: "format_name(name)"
+    })
+    slug: string;
+
     @ManyToMany(() => PostEntity, post => post.categories)
     posts: PostEntity[];
+
+    // format_name(name: string) {
+    //     return name.replace(/\s+/g, '-').toLowerCase();
+    // }
 }

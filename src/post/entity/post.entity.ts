@@ -1,6 +1,8 @@
 import { CategoryEntity } from "src/category/entities/category.entity";
+import { CommentEntity } from "src/comment/entities/comment.entity";
 import { Timestamp } from "src/Generic/timestamp.entity";
-import { Column, Entity, JoinColumn, JoinTable, ManyToMany, PrimaryGeneratedColumn } from "typeorm";
+import { UserEntity } from "src/user/entities/user.entity";
+import { Column, Entity, JoinColumn, JoinTable, ManyToMany, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity("post")
 export class PostEntity extends Timestamp {
@@ -28,4 +30,10 @@ export class PostEntity extends Timestamp {
     })
     @JoinTable()
     categories: CategoryEntity[];
+
+    @OneToMany(() => CommentEntity, comment => comment.post, )
+    comments: CommentEntity[];
+
+    @ManyToOne(() => UserEntity, user => user.posts)
+    author: UserEntity;
 }

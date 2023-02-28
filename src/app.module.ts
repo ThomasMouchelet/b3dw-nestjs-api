@@ -5,6 +5,8 @@ import { PostModule } from './post/post.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule } from '@nestjs/config';
 import { CategoryModule } from './category/category.module';
+import { CommentModule } from './comment/comment.module';
+import { UserModule } from './user/user.module';
 
 @Module({
   imports: [
@@ -21,7 +23,9 @@ import { CategoryModule } from './category/category.module';
       autoLoadEntities: true,
     }),
     PostModule,
-    CategoryModule
+    CategoryModule,
+    CommentModule,
+    UserModule
   ],
   controllers: [AppController],
   providers: [AppService],

@@ -16,12 +16,20 @@ export class PostService {
         let { page, limit, search, order, published, categories } = queries;
 
         console.log(categories);
+        categories = categories ? categories.split(',') : [];
+        console.log(categories);
 
         limit = limit ? +limit : 10;
 
         const query = await this.postRepository
             .createQueryBuilder('post')
             .leftJoinAndSelect('post.categories', 'categories')
+            .leftJoinAndSelect('post.comments', 'comments')
+            .orderBy('comments.createdAt', 'DESC')
+
+        if(categories.length > 0) {
+            query.andWhere('categories.id IN (:...categories)', { categories })
+        }
 
         if(published !== undefined) {
             query
@@ -39,6 +47,8 @@ export class PostService {
             .createQueryBuilder('post')
             .leftJoinAndSelect('post.categories', 'categories')
             .where('post.id = :id', { id })
+            .leftJoinAndSelect('post.comments', 'comments')
+            .orderBy('comments.createdAt', 'DESC')
             .getOne();
 
         return post;
