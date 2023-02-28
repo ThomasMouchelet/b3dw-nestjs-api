@@ -7,7 +7,7 @@ export class UserEntity {
     @PrimaryGeneratedColumn()
     id: number;
     @Column({
-        select: false,
+        // select: false,
     })
     password: string;
     @Column({
