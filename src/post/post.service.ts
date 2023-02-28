@@ -13,7 +13,9 @@ export class PostService {
     ) {}
 
     async getAllPosts(queries) {
-        let { page, limit, search, order, published } = queries;
+        let { page, limit, search, order, published, categories } = queries;
+
+        console.log(categories);
 
         limit = limit ? +limit : 10;
 

@@ -75,8 +75,12 @@ Nest is [MIT licensed](LICENSE).
 
 
 # TODO
-CRUD category
-relation post->categories
-filter post (published)
+Filter post by category
+exemple : 
+- ?categories=webdesign
+- ?categories=webdesign,code (OR)
 
-CRUD User
+CRUD Comment with relation post and user
+order by created at (DESC)
+
+CRUD User (email, password, first name, last name, posts (relation) )
