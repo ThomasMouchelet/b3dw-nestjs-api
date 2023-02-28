@@ -1,4 +1,6 @@
-import { Body, Controller, Delete, Get, Param, ParseIntPipe, Post, Put, Query } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, ParseIntPipe, Post, Put, Query, UseGuards } from '@nestjs/common';
+import { JwtAuthGuard } from 'src/auth/guard/jwt-passport.guard';
+import { User } from 'src/decorator/user.decorator';
 import { PostCreateDto } from './entity/post-create.dto';
 import { PostUpdateDto } from './entity/post-update.dto';
 import { PostService } from './post.service';
@@ -20,10 +22,12 @@ export class PostController {
         return this.postService.getOnePostById(id);
     }
     @Post()
+    @UseGuards(JwtAuthGuard)
     createPost(
         @Body() data: PostCreateDto,
+        @User() user
     ) {
-        return this.postService.createPost(data);
+        return this.postService.createPost(data, user);
     }
     @Put(':id')
     updatePost(

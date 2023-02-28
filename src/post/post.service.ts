@@ -46,6 +46,7 @@ export class PostService {
         const post = await this.postRepository
             .createQueryBuilder('post')
             .leftJoinAndSelect('post.categories', 'categories')
+            .leftJoinAndSelect('post.author', 'author')
             .where('post.id = :id', { id })
             .leftJoinAndSelect('post.comments', 'comments')
             .orderBy('comments.createdAt', 'DESC')
@@ -53,10 +54,15 @@ export class PostService {
 
         return post;
     }
-    async createPost(data: PostCreateDto) {
+    async createPost(data, user) {
+        console.log(user);
+        data.author = parseInt(user.id);
+        console.log(data);
+
         try {
             return await this.postRepository.save(data);
         } catch (error) {
+            console.log(error);
             throw new Error('Error while creating post');
         }
     }
