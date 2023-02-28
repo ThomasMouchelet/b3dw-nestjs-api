@@ -1,8 +1,9 @@
 import { CategoryEntity } from "src/category/entities/category.entity";
 import { CommentEntity } from "src/comment/entities/comment.entity";
 import { Timestamp } from "src/Generic/timestamp.entity";
+import { UploadFileEntity } from "src/upload-file/entities/upload-file.entity";
 import { UserEntity } from "src/user/entities/user.entity";
-import { Column, Entity, JoinColumn, JoinTable, ManyToMany, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, JoinColumn, JoinTable, ManyToMany, ManyToOne, OneToMany, OneToOne, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity("post")
 export class PostEntity extends Timestamp {
@@ -36,4 +37,8 @@ export class PostEntity extends Timestamp {
 
     @ManyToOne(() => UserEntity, user => user.posts)
     author: UserEntity;
+
+    @OneToOne(() => UploadFileEntity, uploadFile => uploadFile.post)
+    @JoinColumn()
+    uploadFile: UploadFileEntity;
 }

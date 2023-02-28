@@ -1,4 +1,5 @@
-import { Body, Controller, Delete, Get, Param, ParseIntPipe, Post, Put, Query, UseGuards } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, ParseIntPipe, Post, Put, Query, UploadedFiles, UseGuards, UseInterceptors } from '@nestjs/common';
+import { FilesInterceptor } from '@nestjs/platform-express';
 import { JwtAuthGuard } from 'src/auth/guard/jwt-passport.guard';
 import { User } from 'src/decorator/user.decorator';
 import { PostCreateDto } from './entity/post-create.dto';
@@ -23,11 +24,13 @@ export class PostController {
     }
     @Post()
     @UseGuards(JwtAuthGuard)
+    @UseInterceptors(FilesInterceptor('files'))
     createPost(
         @Body() data: PostCreateDto,
-        @User() user
+        @User() user,
+        @UploadedFiles() files,
     ) {
-        return this.postService.createPost(data, user);
+        return this.postService.createPost(data, user, files);
     }
     @Put(':id')
     updatePost(
